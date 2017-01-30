@@ -1,13 +1,9 @@
 ---
-title: JARQL: SPARQL for JSON
+layout: default
 ---
 
 # JARQL: SPARQL for JSON
 Jarql is a tool, inspired by [Tarql](https://tarql.github.io/), for converting JSON to RDF using SPARQL 1.1 syntax, mostly using constract queries.
-
-|||||
-| --- | --- | --- | --- |
-| [Code](https://github.com/jarql/jarql) | [Download](https://github.com/jarql/jarql/releases/latest) | [Examples](#examples) | [About](about) |
 
 ## Introduction
 JARQL reads a JSON file from input and converts it in a *raw graph* using the Jarql ontology 
@@ -17,26 +13,28 @@ to create the RDF graph that you want.
 ### How it works
 The root of the JSON file is identified by ```jarql:root``` and each field becomes an attribute of the same ontology. 
 For example the field ```name``` becomes ```jarql:name```. So a minimal example like:
-```
-{ "fieldName": "fieldValue"}
+```js
+{ "fieldName": "fieldValue" }
 ```
 produces:
 
-```jarql:root jarql:filedName "fieldValue"```
+```turtle
+jarql:root jarql:filedName "fieldValue"
+```
 
 A nested object becomes a blank node. So if you have:
-```
+```js
 {
     "name": "Paolino",
     "surname": "Paperino",
-    "uncle: {
+    "uncle": {
         "name": "Paperone",
         "surname": "De Paperoni"
     }
 }
 ```
 you can access to ```"name": "Paperone"``` using a variable ```?uncle``` that identifies the blank node:
-```
+```sparql
 ...
 WHERE {
     jarql:root jarql:uncle ?uncle .
@@ -45,20 +43,20 @@ WHERE {
 ...
 ```
 Instead, if you have an array:
-```
+```js
 {
     "name": "Paperino",
     "nephew": ["Qui", "Quo", "Qua"],
 }
 ```
 every element inside it becomes one object of array's name property:
-```
+```turtle
 @prefix jarql: <http://jarql.com/>.
 jarql:root jarql:name "Paperino";
            jarql:nephew "Qui", "Quo", "Qua"
 ```
 that can be queried by:
-```
+```sparql
 ...
 WHERE {
     jarql:root jarql:nephew ?nephew .
@@ -67,17 +65,21 @@ WHERE {
 ```
 
 ## Usage
-```java -jar jarql-<version>.jar <JSON-File> <Query-File>```
+```
+java -jar jarql-<version>.jar <JSON-File> <Query-File>
+```
 
-So if your JSON is called ```foobar.json``` and you setup a query file called ```foobar.query``` and 
-the latest software version is ```1.0-pre1``` you can run:
+So if your JSON is called `foobar.json` and you setup a query file called `foobar.query` and 
+the latest software version is `1.0-pre1` you can run:
 
-```java -jar jarql-1.0-pre1.jar foobar.json foobar.query```
+```
+java -jar jarql-1.0-pre1.jar foobar.json foobar.query
+```
 
 ## Examples
 ### Example 1 (Tenders in Paperopoli)
 #### JSON input file
-```
+```js
 {
     "cig": "XXXX4A36A7",
     "strutturaProponente": {
@@ -98,7 +100,7 @@ the latest software version is ```1.0-pre1``` you can run:
 }
 ```
 #### RAW graph automagically created
-```
+```turtle
 @prefix jarql: <http://jarql.com/>.
 jarql:root jarql:cig "XXXX4A36A7";
            jarql:strutturaProponente [
@@ -116,11 +118,11 @@ jarql:root jarql:cig "XXXX4A36A7";
 ].
 ```
 #### SPARQL input query
-```
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix dcterm: <http://purl.org/dc/terms/>
-prefix pc: <http://contrattipubblici.org/>
-prefix jarql: <http://jarql.com/> 
+```sparql
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterm: <http://purl.org/dc/terms/>
+PREFIX pc: <http://contrattipubblici.org/>
+PREFIX jarql: <http://jarql.com/> 
 
 CONSTRUCT { 
   ?URI a "Contract";
@@ -149,7 +151,7 @@ WHERE {
 }
 ```
 #### RDF in output
-```
+```turtle
 <http://test.yo/1f839a6f81727fc54c06d4e4be5bc51e>
         a       "Participant"^^<http://www.w3.org/2001/XMLSchema#string> ;
         <http://www.w3.org/2000/01/rdf-schema#label>
@@ -185,5 +187,3 @@ WHERE {
 + Nested arrays in JSON are not supported.
 + The order of JSON elements in an array is irrelevant (so you can't use their order as a way to construct the RDF 
 with enumerative properties).
-
-Last update: 2017-01-30
