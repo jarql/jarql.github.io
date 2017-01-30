@@ -14,7 +14,7 @@ to create the RDF graph that you want.
 The root of the JSON file is identified by `jarql:root` and each field becomes an attribute of the same ontology. 
 For example the field `name` becomes `jarql:name`. So a minimal example like:
 
-```js
+```json
 { "fieldName": "fieldValue" }
 ```
 
@@ -26,7 +26,7 @@ jarql:root jarql:filedName "fieldValue"
 
 A nested object becomes a blank node. So if you have:
 
-```js
+```json
 {
     "name": "Paolino",
     "surname": "Paperino",
@@ -50,7 +50,7 @@ WHERE {
 
 Instead, if you have an array:
 
-```js
+```json
 {
     "name": "Paperino",
     "nephew": ["Qui", "Quo", "Qua"],
@@ -89,10 +89,12 @@ java -jar jarql-1.0-pre1.jar foobar.json foobar.query
 ```
 
 ## Examples
+
 ### Example 1 (Tenders in Paperopoli)
+
 #### JSON input file
 
-```js
+```json
 {
     "cig": "XXXX4A36A7",
     "strutturaProponente": {
