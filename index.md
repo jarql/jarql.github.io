@@ -53,7 +53,7 @@ Instead, if you have an array:
 ```json
 {
     "name": "Paperino",
-    "nephew": ["Qui", "Quo", "Qua"],
+    "nephew": ["Qui", "Quo", "Qua"]
 }
 ```
 
