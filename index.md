@@ -1,3 +1,7 @@
+---
+title: JARQL: SPARQL for JSON
+---
+
 # JARQL: SPARQL for JSON
 Jarql is a tool, inspired by [Tarql](https://tarql.github.io/), for converting JSON to RDF using SPARQL 1.1 syntax, mostly using constract queries.
 
