@@ -7,15 +7,17 @@ Jarql is a tool, inspired by [Tarql](https://tarql.github.io/), for converting J
 
 ## Introduction
 JARQL reads a JSON file from input and converts it in a *raw graph* using the Jarql ontology 
-(```jarql: <http://jarql.com/>```). The idea is to convert the JSON in a graph on which you can ```CONSTRUCT``` SPARQL queries 
+(`jarql: <http://jarql.com/>`). The idea is to convert the JSON in a graph on which you can `CONSTRUCT` SPARQL queries 
 to create the RDF graph that you want.
 
 ### How it works
-The root of the JSON file is identified by ```jarql:root``` and each field becomes an attribute of the same ontology. 
-For example the field ```name``` becomes ```jarql:name```. So a minimal example like:
+The root of the JSON file is identified by `jarql:root` and each field becomes an attribute of the same ontology. 
+For example the field `name` becomes `jarql:name`. So a minimal example like:
+
 ```js
 { "fieldName": "fieldValue" }
 ```
+
 produces:
 
 ```turtle
@@ -23,6 +25,7 @@ jarql:root jarql:filedName "fieldValue"
 ```
 
 A nested object becomes a blank node. So if you have:
+
 ```js
 {
     "name": "Paolino",
@@ -33,7 +36,9 @@ A nested object becomes a blank node. So if you have:
     }
 }
 ```
+
 you can access to ```"name": "Paperone"``` using a variable ```?uncle``` that identifies the blank node:
+
 ```sparql
 ...
 WHERE {
@@ -42,20 +47,26 @@ WHERE {
 }
 ...
 ```
+
 Instead, if you have an array:
+
 ```js
 {
     "name": "Paperino",
     "nephew": ["Qui", "Quo", "Qua"],
 }
 ```
+
 every element inside it becomes one object of array's name property:
+
 ```turtle
 @prefix jarql: <http://jarql.com/>.
 jarql:root jarql:name "Paperino";
            jarql:nephew "Qui", "Quo", "Qua"
 ```
+
 that can be queried by:
+
 ```sparql
 ...
 WHERE {
@@ -65,6 +76,7 @@ WHERE {
 ```
 
 ## Usage
+
 ```
 java -jar jarql-<version>.jar <JSON-File> <Query-File>
 ```
@@ -79,6 +91,7 @@ java -jar jarql-1.0-pre1.jar foobar.json foobar.query
 ## Examples
 ### Example 1 (Tenders in Paperopoli)
 #### JSON input file
+
 ```js
 {
     "cig": "XXXX4A36A7",
@@ -99,7 +112,9 @@ java -jar jarql-1.0-pre1.jar foobar.json foobar.query
     ]
 }
 ```
+
 #### RAW graph automagically created
+
 ```turtle
 @prefix jarql: <http://jarql.com/>.
 jarql:root jarql:cig "XXXX4A36A7";
@@ -117,7 +132,9 @@ jarql:root jarql:cig "XXXX4A36A7";
                jarql:vatID "23232323232"
 ].
 ```
+
 #### SPARQL input query
+
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterm: <http://purl.org/dc/terms/>
@@ -150,7 +167,9 @@ WHERE {
   BIND(URI(CONCAT("http://test.yo/", MD5(?vatIDPart))) as ?URIpart).
 }
 ```
+
 #### RDF in output
+
 ```turtle
 <http://test.yo/1f839a6f81727fc54c06d4e4be5bc51e>
         a       "Participant"^^<http://www.w3.org/2001/XMLSchema#string> ;
