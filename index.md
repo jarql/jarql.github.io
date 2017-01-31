@@ -3,16 +3,16 @@ layout: default
 ---
 
 # JARQL: SPARQL for JSON
-Jarql is a tool, inspired by [Tarql](https://tarql.github.io/), for converting JSON to RDF using SPARQL 1.1 syntax, mostly using construct queries.
+Jarql is a tool, inspired by [Tarql](https://tarql.github.io/), for converting JSON to RDF using SPARQL 1.1 syntax, using construct queries.
 
 ## Introduction
-JARQL reads a JSON file from input and converts it in a *raw graph* using the Jarql ontology 
-(`jarql: <http://jarql.com/>`). The idea is to convert the JSON in a graph on which you can `CONSTRUCT` SPARQL queries 
+JARQL reads a JSON file from input and converts it in a *raw graph* using the Jarql namespace 
+(`jarql: <http://jarql.com/>`). The idea is to convert the JSON in a graph on which you can apply SPARQL `CONSTRUCT` queries 
 to create the RDF graph that you want.
 
 ### How it works
-The root of the JSON file is identified by `jarql:root` and each field becomes an attribute of the same ontology. 
-For example the field `name` becomes `jarql:name`. So a minimal example like:
+The root of the JSON file is identified by `jarql:root` and each key becomes a property of the same namespace. 
+For example the key `name` becomes `jarql:name`. So a minimal example like:
 
 ```json
 { "fieldName": "fieldValue" }
@@ -57,7 +57,7 @@ Instead, if you have an array:
 }
 ```
 
-every element inside it becomes one object of array's name property:
+every element inside it becomes one object with the JSON-key of the array as property pointing to it:
 
 ```turtle
 @prefix jarql: <http://jarql.com/>.
