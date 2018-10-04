@@ -2,6 +2,6 @@ theme: jekyll-theme-cayman
 title: JARQL
 github:
     repository_name: "JARQL"
-    repository_url: "https://github.com/jarql/jarql"
-    release_url: "https://github.com/jarql/jarql/releases/latest"
-last_update: 2017-01-30
+    repository_url: "https://github.com/linked-solutions/jarql"
+    release_url: "https://github.com/linked-solutions/jarql/releases/latest"
+last_update: 2018-10-04
